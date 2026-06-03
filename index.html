@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wagenüberprüfung</title>
+
+<style>
+body { font-family: Arial; margin: 0; background: #f4f6f8; }
+
+.container {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    position: relative;
+    text-align: center;
+}
+
+h1, h2 { text-align: center; }
+
+.card {
+    background: white;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    margin: 3px;
+    background: #ddd;
+}
+
+.ok-active { background: #4CAF50; color: white; }
+.notok-active { background: #f44336; color: white; }
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.nav-btn {
+    width: 48%;
+    padding: 12px;
+    background: #0078D4;
+    color: white;
+}
+
+.start-btn {
+    margin-top: 30px;
+    padding: 18px;
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #0078D4, #005ea6);
+    color: white;
+    border-radius: 12px;
+}
+
+.progress {
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 10px;
+    background: #0078D4;
+    width: 0%;
+    border-radius: 5px;
+}
+
+.info-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #0078D4;
+    color: white;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+}
+
+/* ✅ FIXED MODAL */
+
+.modal {
+    display: none; /* STANDARD: VERSTECKT */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal.active {
+    display: flex; /* NUR SICHTBAR WENN AKTIV */
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-content button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <h2 id="modalTitle"></h2>
+        <p id="modalText"></p>
+        <div id="modalActions"></div>
+    </div>
+</div>
+
+<div class="container">
+
+<!-- START -->
+<div id="startScreen">
+    <button class="info-btn" onclick="showInfo()">i</button>
+    <h1>Herzlich Willkommen zu deinem Dienst!</h1>
+
+    <button class="start-btn" onclick="startApp()">
+        ▶ Prüfung starten
+    </button>
+</div>
+
+<!-- APP -->
+<div id="appScreen" style="display:none;">
+    <button class="info-btn" onclick="showInfo()">i</button>
+
+    <h2 id="sectionTitle"></h2>
+
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="itemsContainer"></div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="prevSection()">Zurück</button>
+        <button class="nav-btn" onclick="nextSection()">Weiter</button>
+    </div>
+</div>
+
+</div>
+
+<script>
+
+const WAGENBUCH_LINK = "https://sharepoint.l.de/intranet/lvb/Seiten/WebComm.aspx";
+
+const infoText = `
+Grundsätzlich ist die Wagenüberprüfung zwingend typgerecht und gewissenhaft gemäß DFStrab § 11 durchzuführen.
+Diese Auflistung dient lediglich der Orientierung und erhebt keinen Anspruch auf Vollständigkeit.
+Zudem ist es möglich, dass nicht jeder Punkt auf jeden Fahrzeugtyp zutrifft.
+Treten Mängel auf, stehen hierzu Empfehlungen für das weitere Vorgehen zur Verfügung.
+Diese entbinden jedoch nicht davon, gegebenenfalls weitere Maßnahmen zu ergreifen.
+`;
+
+const checklist = [
+{
+title: "1. Schritte",
+items: [
+{name:"Komponententest", color:"rot"},
+{name:"Bedieneinheiten", color:"gruen"},
+{name:"Fahrersitz", color:"gruen"},
+{name:"Fahr-/Bremseinrichtungen", color:"gruen"},
+{name:"Kontrollleuchten/Displays", color:"gruen"},
+{name:"Wenn möglich: Anfahrprobe", color:"rot"}
+]
+},
+{
+title: "Außenkontrolle",
+items: [
+{name:"Stromabnehmer", color:"rot"},
+{name:"Äußere Beschädigungen", color:"orange"},
+{name:"Beleuchtung außen", color:"rot"},
+{name:"Scheiben + Spiegel", color:"orange"},
+{name:"Fahrziel- und Linienanzeige", color:"orange"},
+{name:"Scheibenwischer", color:"orange"},
+{name:"Drehgestelle/Kupplungen/Bahnräumer", color:"orange"},
+{name:"Schienenbremse", color:"rot"},
+{name:"Reversiereinrichtung Türen", color:"rot"},
+{name:"Sandstreuvorrichtung", color:"rot"}
+]
+},
+{
+title: "Innenkontrolle",
+items: [
+{name:"Weichenstelleisen, -besen, Kratzhaken", color:"blau"},
+{name:"Feuerlöscher, Verbandskasten", color:"blau"},
+{name:"Fahrzeugspezifisches Zubehör", color:"blau"},
+{name:"Zusatzschilder", color:"blau"},
+{name:"Beleuchtung innen", color:"gruen"},
+{name:"Beschädigungen im Fahrgastraum", color:"gruen"},
+{name:"Fahrgastinformation: Anzeigen und Lautsprecher", color:"gruen"},
+{name:"Fahrkartenautomat und Entwerter", color:"gruen"},
+{name:"Heizung/Klima/Lüftung", color:"gruen"},
+{name:"Heckfahrstand", color:"gruen"},
+{name:"Notbremsen FGR", color:"rot"},
+{name:"Sandvorrat", color:"rot"}
+]
+}
+];
+
+let sectionIndex = 0;
+let results = {};
+
+// ✅ MODAL FUNKTIONEN (FIX)
+
+function showModal(title, text, actionsHTML){
+    document.getElementById("modalTitle").innerText = title;
+    document.getElementById("modalText").innerHTML = text;
+    document.getElementById("modalActions").innerHTML = actionsHTML;
+    document.getElementById("modal").classList.add("active");
+}
+
+function closeModal(){
+    document.getElementById("modal").classList.remove("active");
+}
+
+function showInfo(){
+    showModal("ℹ️ Information", infoText, `<button onclick="closeModal()">Schließen</button>`);
+}
+
+function startApp(){
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("appScreen").style.display = "block";
+    renderSection();
+}
+
+function renderSection(){
+    const section = checklist[sectionIndex];
+    document.getElementById("sectionTitle").innerText = section.title;
+
+    let html = "";
+    section.items.forEach((item, index) => {
+
+        const key = sectionIndex + "-" + index;
+        const result = results[key];
+
+        let okClass = "", notokClass = "";
+        if(result){
+            if(result.ok) okClass = "ok-active";
+            else notokClass = "notok-active";
+        }
+
+        html += `
+        <div class="card item-row">
+            <div>${item.name}</div>
+            <div>
+                <button class="${okClass}" onclick="setResult(${index}, true)">OK</button>
+                <button class="${notokClass}" onclick="setResult(${index}, false)">Nicht OK</button>
+            </div>
+        </div>`;
+    });
+
+    document.getElementById("itemsContainer").innerHTML = html;
+    updateProgress();
+}
+
+function setResult(index, ok){
+    const item = checklist[sectionIndex].items[index];
+    const key = sectionIndex + "-" + index;
+
+    results[key] = { ok, color: item.color };
+    renderSection();
+
+    if(!ok){
+        if(item.color === "rot"){
+            showModal("🚨 Sicherheitsmangel",
+                "Sicherheitsrelevanter Mangel!<br>Bitte sofort mit dem BeDi sprechen.",
+                `<button onclick="closeModal()">OK</button>`);
+        }
+        else if(item.color === "blau"){
+            showModal("🧰 Ausrüstung",
+                "Ausrüstungsgegenstand fehlt oder beschädigt.<br>Bitte mit dem BeDi klären.",
+                `<button onclick="closeModal()">OK</button>`);
+        }
+        else {
+            showModal("📘 Wagenbuch",
+                "Eintrag ins Wagenbuch erforderlich.",
+                `
+                <button onclick="window.open('${WAGENBUCH_LINK}','_blank')">Wagenbuch öffnen</button>
+                <button onclick="closeModal()">Schließen</button>
+                `);
+        }
+    }
+}
+
+function nextSection(){
+
+    const section = checklist[sectionIndex];
+
+    for(let i=0;i<section.items.length;i++){
+        if(!results[sectionIndex+"-"+i]){
+            showModal("⚠️ Unvollständig",
+                "Bitte alle Punkte bewerten.",
+                `<button onclick="closeModal()">OK</button>`);
+            return;
+        }
+    }
+
+    if(sectionIndex < checklist.length - 1){
+        sectionIndex++;
+        renderSection();
+    } else {
+        finish();
+    }
+}
+
+function prevSection(){
+    if(sectionIndex > 0){
+        sectionIndex--;
+        renderSection();
+    }
+}
+
+function updateProgress(){
+    const done = Object.keys(results).length;
+    const total = checklist.reduce((sum, s) => sum + s.items.length, 0);
+    document.getElementById("progressBar").style.width = (done/total*100) + "%";
+}
+
+function finish(){
+
+    let sicherheit = [];
+    let ausruestung = [];
+    let wagenbuch = [];
+
+    Object.keys(results).forEach(key => {
+        const r = results[key];
+        if(!r.ok){
+
+            const [s,i] = key.split("-");
+            const item = checklist[s].items[i];
+            const name = checklist[s].title + " → " + item.name;
+
+            if(r.color === "rot") sicherheit.push(name);
+            else if(r.color === "blau") ausruestung.push(name);
+            else wagenbuch.push(name);
+        }
+    });
+
+    if(!sicherheit.length && !ausruestung.length && !wagenbuch.length){
+        showModal("✅ Alles OK",
+            "Es ist alles in Ordnung.<br>Wir wünschen ruhigen Dienst und gute Fahrt!",
+            `<button onclick="location.reload()">Beenden</button>`);
+        return;
+    }
+
+    let html = "";
+
+    if(sicherheit.length){
+        html += "🚨 Sicherheitsrelevant:<br>" + sicherheit.join("<br>") + "<br><br>";
+    }
+
+    if(ausruestung.length){
+        html += "🧰 Ausrüstung (BeDi):<br>" + ausruestung.join("<br>") + "<br><br>";
+    }
+
+    if(wagenbuch.length){
+        html += "📘 Wagenbuch:<br>" + wagenbuch.join("<br>") + "<br><br>";
+        html += `${WAGENBUCH_LINK}➡ Wagenbuch öffnen</a><br><br>`;
+    }
+
+    showModal("⚠️ Mängel festgestellt", html,
+        `<button onclick="location.reload()">Beenden</button>`);
+}
+
+</script>
+
+</body>
+</html>
