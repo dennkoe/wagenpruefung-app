@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wagenüberprüfung</title>
+<div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;">
+  <div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;">
+    <div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 300px;"></div>
+  </div>
+</div>
 
 <style>
 body { font-family: Arial; margin: 0; background: #f4f6f8; }
@@ -82,9 +81,7 @@ button {
 }
 
 .info-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    position: static; /* ❗ wichtig */
     background: #0078D4;
     color: white;
     border-radius: 50%;
@@ -92,10 +89,8 @@ button {
     height: 35px;
 }
 
-/* ✅ FIXED MODAL */
-
 .modal {
-    display: none; /* STANDARD: VERSTECKT */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -108,7 +103,7 @@ button {
 }
 
 .modal.active {
-    display: flex; /* NUR SICHTBAR WENN AKTIV */
+    display: flex;
 }
 
 .modal-content {
@@ -126,10 +121,35 @@ button {
     padding: 12px;
 }
 
-</style>
-</head>
+.logo {
+    height: 100px;
+    max-width: 150px;
+    object-fit: contain;
+}
 
-<body>
+/* HEADER */
+
+.header {
+    display: flex;
+    justify-content: space-between; /* verteilt links + rechts */
+    align-items: center;           /* gleiche Höhe */
+    margin-bottom: 15px;
+    margin-left: -20px;
+}
+
+.footer {
+    margin-top: 40px;
+    padding: 15px;
+    background: #f0f0f0;
+    font-size: 13px;
+    text-align: left;
+    color: #555;
+    border-top: 1px solid #ccc;
+    line-height: 1.5;
+}
+
+
+</style>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
@@ -142,10 +162,15 @@ button {
 
 <div class="container">
 
+
+<div class="header">
+    <img src="https://leipziger.sharepoint.com/:i:/r/sites/ChecklisteWagenvorbereitungTEST/Freigegebene%20Dokumente/logowide.jpg?csf=1&web=1&e=lLFtDq" class="logo">
+    <button class="info-btn" onclick="showInfo()">i</button>
+</div>
+
 <!-- START -->
 <div id="startScreen">
-    <button class="info-btn" onclick="showInfo()">i</button>
-    <h1>Herzlich Willkommen zu deinem Dienst!</h1>
+       <h1>Herzlich Willkommen zu deinem Dienst!</h1>
 
     <button class="start-btn" onclick="startApp()">
         ▶ Prüfung starten
@@ -154,9 +179,7 @@ button {
 
 <!-- APP -->
 <div id="appScreen" style="display:none;">
-    <button class="info-btn" onclick="showInfo()">i</button>
-
-    <h2 id="sectionTitle"></h2>
+       <h2 id="sectionTitle"></h2>
 
     <div class="progress">
         <div class="progress-bar" id="progressBar"></div>
@@ -172,16 +195,23 @@ button {
 
 </div>
 
+<footer class="footer">
+    <div>Copyright © 2026</div>
+    <div>LAB Leipziger Aus- und Weiterbildungsbetriebe GmbH</div>
+    <div>Ansprechpartner: Fahrschule Straßenbahn</div>
+    <div>All rights reserved.</div>
+    <div>Nur zur internen Verwendung. Es werden keine Eingaben gespeichert.</div>
+</footer>
+
 <script>
 
 const WAGENBUCH_LINK = "https://sharepoint.l.de/intranet/lvb/Seiten/WebComm.aspx";
 
 const infoText = `
-Grundsätzlich ist die Wagenüberprüfung zwingend typgerecht und gewissenhaft gemäß DFStrab § 11 durchzuführen.
-Diese Auflistung dient lediglich der Orientierung und erhebt keinen Anspruch auf Vollständigkeit.
-Zudem ist es möglich, dass nicht jeder Punkt auf jeden Fahrzeugtyp zutrifft.
-Treten Mängel auf, stehen hierzu Empfehlungen für das weitere Vorgehen zur Verfügung.
-Diese entbinden jedoch nicht davon, gegebenenfalls weitere Maßnahmen zu ergreifen.
+Diese Anwendung dient ausschließlich als Unterstützung bei der Durchführung der Wagenüberprüfung. 
+Sie ersetzt keine geltenden Vorschriften, Dienstanweisungen oder gesetzlichen Bestimmungen.
+
+Die Wagenüberprüfung ist zwingend typgerecht und gewissenhaft gemäß DFStrab § 11 durchzuführen.
 `;
 
 const checklist = [
@@ -233,8 +263,6 @@ items: [
 let sectionIndex = 0;
 let results = {};
 
-// ✅ MODAL FUNKTIONEN (FIX)
-
 function showModal(title, text, actionsHTML){
     document.getElementById("modalTitle").innerText = title;
     document.getElementById("modalText").innerHTML = text;
@@ -247,7 +275,7 @@ function closeModal(){
 }
 
 function showInfo(){
-    showModal("ℹ️ Information", infoText, `<button onclick="closeModal()">Schließen</button>`);
+    showModal("ℹ️ Information", infoText, `<button onclick="closeModal()">Verstanden</button>`);
 }
 
 function startApp(){
@@ -276,8 +304,8 @@ function renderSection(){
         <div class="card item-row">
             <div>${item.name}</div>
             <div>
-                <button class="${okClass}" onclick="setResult(${index}, true)">OK</button>
-                <button class="${notokClass}" onclick="setResult(${index}, false)">Nicht OK</button>
+                <button class="${okClass}" data-index="${index}" data-ok="true">OK</button>
+                <button class="${notokClass}" data-index="${index}" data-ok="false">Nicht OK</button>
             </div>
         </div>`;
     });
@@ -301,22 +329,37 @@ function setResult(index, ok){
         }
         else if(item.color === "blau"){
             showModal("🧰 Ausrüstung",
-                "Ausrüstungsgegenstand fehlt oder beschädigt.<br>Bitte mit dem BeDi klären.",
+                "Ausrüstungsgegenstand fehlt oder ist beschädigt.<br>Bitte mit dem BeDi klären.",
                 `<button onclick="closeModal()">OK</button>`);
         }
         else {
             showModal("📘 Wagenbuch",
-                "Eintrag ins Wagenbuch erforderlich.",
-                `
-                <button onclick="window.open('${WAGENBUCH_LINK}','_blank')">Wagenbuch öffnen</button>
-                <button onclick="closeModal()">Schließen</button>
-                `);
+           "Eintrag ins Wagenbuch erforderlich.",
+              `
+            <a href="${WAGENBUCH_LINK}" target="_blank" style="
+              display:inline-block;
+              padding:12px;
+              background:#0078D4;
+              color:white;
+              border-radius:6px;
+              text-decoration:none;
+              margin-top:10px;
+              ">
+              Wagenbuch öffnen
+            </a>
+    <button id="closeModalBtn">Schließen</button>
+    `);
         }
     }
 }
 
-function nextSection(){
+document.addEventListener("click", function(e){
+    if(e.target.id === "closeModalBtn"){
+        closeModal();
+    }
+});
 
+function nextSection(){
     const section = checklist[sectionIndex];
 
     for(let i=0;i<section.items.length;i++){
@@ -387,15 +430,36 @@ function finish(){
     }
 
     if(wagenbuch.length){
-        html += "📘 Wagenbuch:<br>" + wagenbuch.join("<br>") + "<br><br>";
-        html += `${WAGENBUCH_LINK}➡ Wagenbuch öffnen</a><br><br>`;
-    }
+    html += "📘 Wagenbuch:<br>" + wagenbuch.join("<br>") + "<br><br>";
+
+    html += `
+    <a href="${WAGENBUCH_LINK}" target="_blank" rel="noopener noreferrer"
+       style="
+            display:inline-block;
+            padding:12px;
+            background:#0078D4;
+            color:white;
+            border-radius:6px;
+            text-decoration:none;
+            margin-top:10px;
+       ">
+       Wagenbuch öffnen
+    </a>
+    <br><br>
+    `;
+}
+
 
     showModal("⚠️ Mängel festgestellt", html,
         `<button onclick="location.reload()">Beenden</button>`);
 }
+document.addEventListener("click", function(e){
+    if(e.target.matches("button[data-index]")){
+        const index = parseInt(e.target.getAttribute("data-index"));
+        const ok = e.target.getAttribute("data-ok") === "true";
+        setResult(index, ok);
+    }
+});
 
+``
 </script>
-
-</body>
-</html>
