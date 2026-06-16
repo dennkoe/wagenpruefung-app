@@ -5,6 +5,11 @@
 </div>
 
 <style>
+
+html, body {
+    max-width: 100%;
+}
+
 body { font-family: Arial; margin: 0; background: #f4f6f8; }
 
 .container {
@@ -124,24 +129,30 @@ button {
     padding: 12px;
 }
 
+
 .logo {
-    height: 100px;
-    max-width: 150px;
+    height: auto;
+    max-height: 80px;
+    max-width: 100%;
     object-fit: contain;
 }
 
+
 /* HEADER */
+
 
 .header {
     display: flex;
     justify-content: space-between; 
     align-items: center;           
     margin-bottom: 15px;
-    margin-left: -20px;
+    margin-left: 0; /* FIX */
 }
 
+
 .footer {
-    margin-top: 40px;
+    max-width: 600px;
+    margin: 40px auto 0 auto; /* zentrieren */
     padding: 15px;
     background: #f0f0f0;
     font-size: 13px;
@@ -151,6 +162,40 @@ button {
     line-height: 1.5;
 }
 
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    overflow-x: hidden;
+}
+
+
+@media (max-width: 480px) {
+    
+    .container {
+        padding: 15px;
+    }
+
+    .header {
+        flex-direction: row;
+    }
+
+    .logo {
+        max-height: 60px;
+    }
+
+    .start-btn {
+        font-size: 18px;
+        padding: 14px;
+    }
+
+    .nav-btn {
+        padding: 10px;
+    }
+}
 
 </style>
 
@@ -167,7 +212,8 @@ button {
 
 
 <div class="header">
-    <img src="https://leipziger.sharepoint.com/:i:/r/sites/ChecklisteWagenvorbereitungTEST/Freigegebene%20Dokumente/logowide.jpg?csf=1&web=1&e=SeYh9T" class="logo">
+   <img src="https://leipziger.sharepoint.com/:i:/r/sites/ChecklisteWagenvorbereitungTEST/Freigegebene%20Dokumente/logowide.jpg?csf=1&web=1&e=SeYh9T" class="logo">
+
     <button class="info-btn" onclick="showInfo()">i</button>
 </div>
 
@@ -204,6 +250,7 @@ button {
     <div>Ansprechpartner: Fahrschule Straßenbahn</div>
     <div>All rights reserved.</div>
     <div>Nur zur internen Verwendung. Es werden keine Eingaben gespeichert.</div>
+	<div>Mit Hilfe von KI generiert.</div>
 </footer>
 
 <script>
