@@ -10,25 +10,32 @@ html, body {
     max-width: 100%;
 }
 
-body { font-family: Arial; margin: 0; background: #f4f6f8; }
+
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #f4f6f8;
+    font-size: 18px;   
+}
+
 
 .container {
-    padding: 20px;
-    max-width: 100%;   
-    margin: auto;
-    position: relative;
+    padding: 16px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
     text-align: center;
 }
 
+
 h1, h2 { text-align: center; }
 
+
 .card {
-    background: white;
-    padding: 12px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 16px;
+    font-size: 18px;
 }
+
 
 .item-row {
     display: flex;
@@ -175,9 +182,6 @@ body {
 
 @media (max-width: 480px) {
 
-    ...
-
-    /* ✅ Checkliste mobil optimieren */
     .item-row {
         flex-direction: column;
         align-items: stretch;
@@ -185,6 +189,7 @@ body {
 
     .item-row > div:first-child {
         text-align: left;
+        font-size: 18px;
         font-weight: bold;
     }
 
@@ -196,11 +201,10 @@ body {
 
     .item-row button {
         flex: 1;
-        padding: 14px;
-        font-size: 16px;
+        padding: 16px;
+        font-size: 18px;
     }
 }
-``
 
 </style>
 
@@ -217,7 +221,7 @@ body {
 
 
 <div class="header">
-   <img src="https://leipziger.sharepoint.com/:i:/r/sites/ChecklisteWagenvorbereitungTEST/Freigegebene%20Dokumente/logowide.jpg?csf=1&web=1&e=wRm4kl" class="logo">
+   <img src="https://sl.bing.net/il8zAdVP9WK" class="logo">
 
     <button class="info-btn" onclick="showInfo()">i</button>
 </div>
