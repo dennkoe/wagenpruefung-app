@@ -1,67 +1,91 @@
-
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Wagenüberprüfung – LVB</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#e8edf2;font-size:16px;color:var(--color-text-primary)}
-.app{max-width:480px;margin:0 auto;padding:0 0 32px}
+html,body{height:100%;-webkit-tap-highlight-color:transparent}
+body{font-family:Arial,sans-serif;background:#e8edf2;font-size:16px;color:#111}
+.app{max-width:480px;margin:0 auto;padding:0 0 40px}
 
-.topbar{background:#0056a3;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
-.topbar-title{color:#fff;font-size:15px;font-weight:700;letter-spacing:0.2px}
-.info-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.2);color:#fff;border:1.5px solid rgba(255,255,255,0.5);font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
+/* TOPBAR */
+.topbar{background:#1a3668;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
+.topbar-logo{height:34px;width:auto;object-fit:contain;flex-shrink:0;background:#fff;border-radius:4px;padding:3px 6px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.topbar-label{color:#fff;font-size:13px;font-weight:600;opacity:0.88;white-space:nowrap}
+.info-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.15);color:#fff;border:1.5px solid rgba(255,255,255,0.45);font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-appearance:none}
 
-.content{padding:16px}
+/* CONTENT */
+.content{padding:14px 14px 0}
 
-.start-card{background:#fff;border-radius:16px;padding:28px 20px 24px;margin-top:12px;box-shadow:0 2px 8px rgba(0,0,0,0.10)}
-.start-card h1{font-size:21px;font-weight:700;margin-bottom:10px;line-height:1.3;color:#111}
+/* START */
+.start-card{background:#fff;border-radius:16px;padding:28px 20px 24px;margin-top:10px;box-shadow:0 2px 8px rgba(0,0,0,0.10)}
+.lvb-stripe{width:48px;height:5px;background:#f5b300;border-radius:3px;margin-bottom:18px}
+.start-card h1{font-size:21px;font-weight:700;margin-bottom:10px;line-height:1.3;color:#1a3668}
 .start-card p{font-size:15px;color:#555;line-height:1.6;margin-bottom:24px}
-.start-btn{width:100%;padding:18px;background:#0078D4;color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer}
-.start-btn:active{background:#005ea6}
+.start-btn{width:100%;padding:18px;background:#1a3668;color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;-webkit-appearance:none}
+.start-btn:active{background:#122550}
 
-.section-header{margin-bottom:12px}
-.section-title{font-size:19px;font-weight:700;color:#111;margin-bottom:8px}
-
-.progress-bar-wrap{background:#c5cfd9;border-radius:6px;height:10px;overflow:hidden}
-.progress-fill{height:10px;background:#0078D4;border-radius:6px;transition:width 0.3s}
+/* SECTION */
+.section-header{margin:12px 0 12px}
+.section-title{font-size:19px;font-weight:700;color:#1a3668;margin-bottom:8px}
+.progress-bg{background:#c5cfd9;border-radius:6px;height:10px;overflow:hidden}
+.progress-fill{height:10px;background:#1a3668;border-radius:6px;transition:width 0.3s}
 .progress-label{font-size:12px;color:#555;margin-top:5px;text-align:right}
 
+/* CARDS */
 .card{background:#fff;border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
 .item-name{font-size:16px;font-weight:600;color:#111;margin-bottom:6px;line-height:1.4}
 .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px;vertical-align:middle}
 .badge-rot{background:#ffcdd2;color:#b71c1c}
 .badge-blau{background:#bbdefb;color:#0d47a1}
 .btn-row{display:flex;gap:10px;margin-top:12px}
-.ok-btn,.notok-btn{flex:1;padding:14px 8px;border-radius:10px;border:2px solid #bbb;font-size:16px;font-weight:700;cursor:pointer;background:#f0f0f0;color:#333;transition:all 0.15s}
+.ok-btn,.notok-btn{flex:1;padding:15px 8px;border-radius:10px;border:2px solid #ccc;font-size:16px;font-weight:700;cursor:pointer;background:#f0f0f0;color:#333;-webkit-appearance:none;transition:all 0.15s}
 .ok-btn:active,.notok-btn:active{opacity:0.8;transform:scale(0.97)}
 .ok-btn.active{background:#2e7d32;color:#fff;border-color:#1b5e20}
 .notok-btn.active{background:#c62828;color:#fff;border-color:#7f0000}
 
-.nav-row{display:flex;gap:12px;margin-top:20px}
-.nav-btn{flex:1;padding:16px;border-radius:12px;border:none;background:#0078D4;color:#fff;font-size:17px;font-weight:700;cursor:pointer}
-.nav-btn:disabled{background:#b0bec5;color:#fff;cursor:default}
-.nav-btn:active:not(:disabled){background:#005ea6}
+/* NAV */
+.nav-row{display:flex;gap:12px;margin-top:18px}
+.nav-btn{flex:1;padding:16px;border-radius:12px;border:none;background:#1a3668;color:#fff;font-size:17px;font-weight:700;cursor:pointer;-webkit-appearance:none}
+.nav-btn:disabled{background:#b0bec5;cursor:default}
+.nav-btn:active:not(:disabled){background:#122550}
 
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;align-items:center;justify-content:center;padding:20px}
-.overlay.show{display:flex}
-.modal{background:#fff;border-radius:20px;padding:28px 22px 22px;width:100%;max-width:420px;max-height:85vh;overflow-y:auto}
-.modal-icon{font-size:36px;margin-bottom:10px;text-align:center}
-.modal h2{font-size:18px;font-weight:700;margin-bottom:10px;color:#111;text-align:center}
+/* MODAL */
+.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.62);z-index:200}
+.overlay.show{display:flex;align-items:center;justify-content:center;padding:24px}
+.modal{background:#fff;border-radius:20px;padding:28px 22px 22px;width:100%;max-width:420px;max-height:80vh;overflow-y:auto}
+.modal-icon{font-size:38px;margin-bottom:10px;text-align:center;display:block}
+.modal h2{font-size:18px;font-weight:700;margin-bottom:10px;color:#1a3668;text-align:center}
 .modal-body{font-size:15px;color:#444;line-height:1.65;margin-bottom:18px;text-align:center}
 .modal-body strong{color:#111}
-.modal-btn{display:block;width:100%;padding:15px;border-radius:11px;background:#0078D4;color:#fff;border:none;font-size:16px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;margin-top:8px}
+.modal-btn{display:block;width:100%;padding:15px;border-radius:11px;background:#1a3668;color:#fff;border:none;font-size:16px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;margin-top:8px;-webkit-appearance:none}
 .modal-btn.secondary{background:#e0e0e0;color:#222}
 .modal-btn:active{opacity:0.85}
 
-.footer{font-size:11px;color:#888;text-align:center;padding:20px 16px 4px;line-height:1.8}
+/* FOOTER */
+.footer{font-size:11px;color:#888;text-align:center;padding:22px 16px 4px;line-height:1.9}
 </style>
+</head>
+<body>
 
-<div class="app" id="app">
+<div class="app">
   <div class="topbar">
-    <div class="topbar-title">LAB Leipzig · Wagenüberprüfung</div>
-    <button class="info-btn" id="infoBtn">i</button>
+    <img src="Leip_Vb_LGelb_HG_quer_rgb.jpg" class="topbar-logo" alt="Leipziger Verkehrsbetriebe"
+         onerror="this.style.display='none';document.getElementById('topbar-fallback').style.display='block'">
+    <span id="topbar-fallback" style="display:none;color:#f5b300;font-size:15px;font-weight:700;">LVB</span>
+    <div class="topbar-right">
+      <span class="topbar-label">Wagenüberprüfung</span>
+      <button class="info-btn" id="infoBtn">i</button>
+    </div>
   </div>
 
   <div class="content">
     <div id="startScreen">
       <div class="start-card">
+        <div class="lvb-stripe"></div>
         <h1>Herzlich willkommen zu deinem Dienst!</h1>
         <p>Führe die Wagenüberprüfung sorgfältig und typgerecht durch. Alle Punkte müssen bewertet werden.</p>
         <button class="start-btn" id="startBtn">▶ Prüfung starten</button>
@@ -69,9 +93,9 @@ body{font-family:Arial,sans-serif;background:#e8edf2;font-size:16px;color:var(--
     </div>
 
     <div id="appScreen" style="display:none">
-      <div class="section-header" style="margin-top:12px">
+      <div class="section-header">
         <div class="section-title" id="sectionTitle"></div>
-        <div class="progress-bar-wrap"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+        <div class="progress-bg"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
         <div class="progress-label" id="progressLabel"></div>
       </div>
       <div id="itemsContainer"></div>
@@ -81,13 +105,19 @@ body{font-family:Arial,sans-serif;background:#e8edf2;font-size:16px;color:var(--
       </div>
     </div>
 
-    <div class="footer">© 2026 LAB Leipziger Aus- und Weiterbildungsbetriebe GmbH<br>Nur zur internen Verwendung · Keine Daten werden gespeichert</div>
+    <div class="footer">
+      © 2026 LAB Leipziger Aus- und Weiterbildungsbetriebe GmbH<br>
+      Ansprechpartner: Fahrschule Straßenbahn<br>
+      Nur zur internen Verwendung · Keine Daten werden gespeichert<br>
+      Mit Hilfe von KI generiert.
+    </div>
   </div>
 </div>
 
+<!-- MODAL -->
 <div class="overlay" id="overlay">
   <div class="modal" id="modal">
-    <div class="modal-icon" id="modalIcon"></div>
+    <span class="modal-icon" id="modalIcon"></span>
     <h2 id="modalTitle"></h2>
     <div class="modal-body" id="modalBody"></div>
     <div id="modalActions"></div>
@@ -95,121 +125,135 @@ body{font-family:Arial,sans-serif;background:#e8edf2;font-size:16px;color:var(--
 </div>
 
 <script>
-const WAGENBUCH="https://sharepoint.l.de/intranet/lvb/Seiten/WebComm.aspx";
-const checklist=[
-{title:"1. Schritte",items:[
-  {name:"Komponententest",color:"rot"},
-  {name:"Bedieneinheiten",color:"gruen"},
-  {name:"Fahrersitz",color:"gruen"},
-  {name:"Fahr-/Bremseinrichtungen",color:"gruen"},
-  {name:"Kontrollleuchten / Displays",color:"gruen"},
-  {name:"Wenn möglich: Anfahrprobe",color:"rot"}
-]},
-{title:"Außenkontrolle",items:[
-  {name:"Stromabnehmer",color:"rot"},
-  {name:"Äußere Beschädigungen",color:"orange"},
-  {name:"Beleuchtung außen",color:"rot"},
-  {name:"Scheiben + Spiegel",color:"orange"},
-  {name:"Fahrziel- und Linienanzeige",color:"orange"},
-  {name:"Scheibenwischer",color:"orange"},
-  {name:"Drehgestelle / Kupplungen / Bahnräumer",color:"orange"},
-  {name:"Schienenbremse",color:"rot"},
-  {name:"Reversiereinrichtung Türen",color:"rot"},
-  {name:"Sandstreuvorrichtung",color:"rot"}
-]},
-{title:"Innenkontrolle",items:[
-  {name:"Weichenstelleisen, -besen, Kratzhaken",color:"blau"},
-  {name:"Feuerlöscher, Verbandskasten",color:"blau"},
-  {name:"Fahrzeugspezifisches Zubehör",color:"blau"},
-  {name:"Zusatzschilder",color:"blau"},
-  {name:"Beleuchtung innen",color:"gruen"},
-  {name:"Beschädigungen im Fahrgastraum",color:"gruen"},
-  {name:"Fahrgastinfo: Anzeigen und Lautsprecher",color:"gruen"},
-  {name:"Fahrkartenautomat und Entwerter",color:"gruen"},
-  {name:"Heizung / Klima / Lüftung",color:"gruen"},
-  {name:"Heckfahrstand",color:"gruen"},
-  {name:"Notbremsen FGR",color:"rot"},
-  {name:"Sandvorrat",color:"rot"}
-]}
+const WAGENBUCH = "https://sharepoint.l.de/intranet/lvb/Seiten/WebComm.aspx";
+
+const checklist = [
+  {
+    title: "1. Schritte",
+    items: [
+      {name:"Komponententest", color:"rot"},
+      {name:"Bedieneinheiten", color:"gruen"},
+      {name:"Fahrersitz", color:"gruen"},
+      {name:"Fahr-/Bremseinrichtungen", color:"gruen"},
+      {name:"Kontrollleuchten / Displays", color:"gruen"},
+      {name:"Wenn möglich: Anfahrprobe", color:"rot"}
+    ]
+  },
+  {
+    title: "Außenkontrolle",
+    items: [
+      {name:"Stromabnehmer", color:"rot"},
+      {name:"Äußere Beschädigungen", color:"orange"},
+      {name:"Beleuchtung außen", color:"rot"},
+      {name:"Scheiben + Spiegel", color:"orange"},
+      {name:"Fahrziel- und Linienanzeige", color:"orange"},
+      {name:"Scheibenwischer", color:"orange"},
+      {name:"Drehgestelle / Kupplungen / Bahnräumer", color:"orange"},
+      {name:"Schienenbremse", color:"rot"},
+      {name:"Reversiereinrichtung Türen", color:"rot"},
+      {name:"Sandstreuvorrichtung", color:"rot"}
+    ]
+  },
+  {
+    title: "Innenkontrolle",
+    items: [
+      {name:"Weichenstelleisen, -besen, Kratzhaken", color:"blau"},
+      {name:"Feuerlöscher, Verbandskasten", color:"blau"},
+      {name:"Fahrzeugspezifisches Zubehör", color:"blau"},
+      {name:"Zusatzschilder", color:"blau"},
+      {name:"Beleuchtung innen", color:"gruen"},
+      {name:"Beschädigungen im Fahrgastraum", color:"gruen"},
+      {name:"Fahrgastinfo: Anzeigen und Lautsprecher", color:"gruen"},
+      {name:"Fahrkartenautomat und Entwerter", color:"gruen"},
+      {name:"Heizung / Klima / Lüftung", color:"gruen"},
+      {name:"Heckfahrstand", color:"gruen"},
+      {name:"Notbremsen FGR", color:"rot"},
+      {name:"Sandvorrat", color:"rot"}
+    ]
+  }
 ];
 
-let sectionIndex=0,results={};
+let sectionIndex = 0;
+let results = {};
 
-function totalItems(){return checklist.reduce((s,c)=>s+c.items.length,0)}
-function doneItems(){return Object.keys(results).length}
+function totalItems(){ return checklist.reduce((s,c) => s + c.items.length, 0); }
+function doneItems(){ return Object.keys(results).length; }
 
-function showModal(icon,title,bodyHTML,actionsHTML){
-  document.getElementById("modalIcon").innerText=icon;
-  document.getElementById("modalTitle").innerText=title;
-  document.getElementById("modalBody").innerHTML=bodyHTML;
-  document.getElementById("modalActions").innerHTML=actionsHTML;
+function showModal(icon, title, bodyHTML, actionsHTML){
+  document.getElementById("modalIcon").innerText = icon;
+  document.getElementById("modalTitle").innerText = title;
+  document.getElementById("modalBody").innerHTML = bodyHTML;
+  document.getElementById("modalActions").innerHTML = actionsHTML;
   document.getElementById("overlay").classList.add("show");
 }
-function closeModal(){document.getElementById("overlay").classList.remove("show")}
+function closeModal(){ document.getElementById("overlay").classList.remove("show"); }
 
-document.getElementById("overlay").addEventListener("click",function(e){if(e.target===this)closeModal()});
+document.getElementById("overlay").addEventListener("click", function(e){
+  if(e.target === this) closeModal();
+});
 
-document.getElementById("infoBtn").addEventListener("click",function(){
-  showModal("ℹ️","Information",
+document.getElementById("infoBtn").addEventListener("click", function(){
+  showModal("ℹ️", "Information",
     "Diese Anwendung unterstützt die Wagenüberprüfung. Sie ersetzt keine Vorschriften, Dienstanweisungen oder gesetzlichen Bestimmungen.<br><br>Die Prüfung ist typgerecht und gewissenhaft gemäß <strong>DFStrab § 11</strong> durchzuführen.",
     `<button class="modal-btn secondary" onclick="closeModal()">Verstanden</button>`);
 });
 
-document.getElementById("startBtn").addEventListener("click",function(){
-  document.getElementById("startScreen").style.display="none";
-  document.getElementById("appScreen").style.display="block";
+document.getElementById("startBtn").addEventListener("click", function(){
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("appScreen").style.display = "block";
   renderSection();
 });
 
 function renderSection(){
-  const sec=checklist[sectionIndex];
-  document.getElementById("sectionTitle").innerText=sec.title;
-  let html="";
-  sec.items.forEach((item,i)=>{
-    const key=sectionIndex+"-"+i;
-    const r=results[key];
-    const okC=r&&r.ok?"ok-btn active":"ok-btn";
-    const noC=r&&r.ok===false?"notok-btn active":"notok-btn";
-    const badge=item.color==="rot"?`<span class="badge badge-rot">Sicherheit</span>`:
-                 item.color==="blau"?`<span class="badge badge-blau">Ausrüstung</span>`:"";
-    html+=`<div class="card">
+  const sec = checklist[sectionIndex];
+  document.getElementById("sectionTitle").innerText = sec.title;
+  let html = "";
+  sec.items.forEach((item, i) => {
+    const key = sectionIndex + "-" + i;
+    const r = results[key];
+    const okC  = r && r.ok           ? "ok-btn active"    : "ok-btn";
+    const noC  = r && r.ok === false ? "notok-btn active" : "notok-btn";
+    const badge = item.color === "rot"  ? `<span class="badge badge-rot">Sicherheit</span>`
+                : item.color === "blau" ? `<span class="badge badge-blau">Ausrüstung</span>`
+                : "";
+    html += `<div class="card">
       <div class="item-name">${item.name}${badge}</div>
       <div class="btn-row">
-        <button class="${okC}" data-i="${i}" data-ok="true">✔ OK</button>
+        <button class="${okC}"    data-i="${i}" data-ok="true">✔ OK</button>
         <button class="${noC}" data-i="${i}" data-ok="false">✘ Nicht OK</button>
       </div>
     </div>`;
   });
-  document.getElementById("itemsContainer").innerHTML=html;
-  const all=doneItems(),tot=totalItems();
-  document.getElementById("progressFill").style.width=(all/tot*100)+"%";
-  document.getElementById("progressLabel").innerText=all+" von "+tot+" bewertet";
-  document.getElementById("prevBtn").disabled=sectionIndex===0;
+  document.getElementById("itemsContainer").innerHTML = html;
+  const all = doneItems(), tot = totalItems();
+  document.getElementById("progressFill").style.width = (all / tot * 100) + "%";
+  document.getElementById("progressLabel").innerText = all + " von " + tot + " bewertet";
+  document.getElementById("prevBtn").disabled = sectionIndex === 0;
 }
 
-document.getElementById("itemsContainer").addEventListener("click",function(e){
-  const btn=e.target.closest("button[data-i]");
-  if(!btn)return;
-  const i=parseInt(btn.getAttribute("data-i"));
-  const ok=btn.getAttribute("data-ok")==="true";
-  setResult(i,ok);
+document.getElementById("itemsContainer").addEventListener("click", function(e){
+  const btn = e.target.closest("button[data-i]");
+  if(!btn) return;
+  const i  = parseInt(btn.getAttribute("data-i"));
+  const ok = btn.getAttribute("data-ok") === "true";
+  setResult(i, ok);
 });
 
-function setResult(i,ok){
-  const item=checklist[sectionIndex].items[i];
-  results[sectionIndex+"-"+i]={ok,color:item.color};
+function setResult(i, ok){
+  const item = checklist[sectionIndex].items[i];
+  results[sectionIndex + "-" + i] = {ok, color: item.color};
   renderSection();
   if(!ok){
-    if(item.color==="rot"){
-      showModal("🚨","Sicherheitsmangel",
+    if(item.color === "rot"){
+      showModal("🚨", "Sicherheitsmangel",
         "<strong>Sicherheitsrelevanter Mangel!</strong><br><br>Bitte sofort mit dem BeDi sprechen. Der Wagen darf nicht eingesetzt werden.",
         `<button class="modal-btn secondary" onclick="closeModal()">Verstanden</button>`);
-    } else if(item.color==="blau"){
-      showModal("🧰","Ausrüstung fehlt",
+    } else if(item.color === "blau"){
+      showModal("🧰", "Ausrüstung fehlt",
         "Ein Ausrüstungsgegenstand fehlt oder ist beschädigt.<br><br>Bitte mit dem BeDi klären.",
         `<button class="modal-btn secondary" onclick="closeModal()">Verstanden</button>`);
     } else {
-      showModal("📋","Wagenbuch erforderlich",
+      showModal("📋", "Wagenbuch erforderlich",
         "Dieser Mangel muss ins Wagenbuch eingetragen werden.",
         `<a href="${WAGENBUCH}" target="_blank" class="modal-btn">Wagenbuch öffnen</a>
          <button class="modal-btn secondary" onclick="closeModal()">Schließen</button>`);
@@ -218,46 +262,59 @@ function setResult(i,ok){
 }
 
 function nextSection(){
-  const sec=checklist[sectionIndex];
-  for(let i=0;i<sec.items.length;i++){
-    if(!results[sectionIndex+"-"+i]){
-      showModal("⚠️","Unvollständig","Bitte alle Punkte dieser Sektion bewerten.",
+  const sec = checklist[sectionIndex];
+  for(let i = 0; i < sec.items.length; i++){
+    if(!results[sectionIndex + "-" + i]){
+      showModal("⚠️", "Unvollständig", "Bitte alle Punkte dieser Sektion bewerten.",
         `<button class="modal-btn secondary" onclick="closeModal()">OK</button>`);
       return;
     }
   }
-  if(sectionIndex<checklist.length-1){
-    sectionIndex++;renderSection();window.scrollTo(0,0);
-  } else {finish();}
+  if(sectionIndex < checklist.length - 1){
+    sectionIndex++;
+    renderSection();
+    window.scrollTo(0, 0);
+  } else {
+    finish();
+  }
 }
 
-function prevSection(){if(sectionIndex>0){sectionIndex--;renderSection();window.scrollTo(0,0);}}
+function prevSection(){
+  if(sectionIndex > 0){ sectionIndex--; renderSection(); window.scrollTo(0, 0); }
+}
 
 function finish(){
-  let sicherheit=[],ausruestung=[],wagenbuch=[];
-  Object.keys(results).forEach(key=>{
-    const r=results[key];
+  let sicherheit = [], ausruestung = [], wagenbuch = [];
+  Object.keys(results).forEach(key => {
+    const r = results[key];
     if(!r.ok){
-      const [s,i]=key.split("-");
-      const item=checklist[s].items[i];
-      const n=checklist[s].title+" → "+item.name;
-      if(r.color==="rot")sicherheit.push(n);
-      else if(r.color==="blau")ausruestung.push(n);
-      else wagenbuch.push(n);
+      const [s, i] = key.split("-");
+      const item = checklist[s].items[i];
+      const n = checklist[s].title + " → " + item.name;
+      if(r.color === "rot")       sicherheit.push(n);
+      else if(r.color === "blau") ausruestung.push(n);
+      else                        wagenbuch.push(n);
     }
   });
-  if(!sicherheit.length&&!ausruestung.length&&!wagenbuch.length){
-    showModal("✅","Alles in Ordnung",
+
+  if(!sicherheit.length && !ausruestung.length && !wagenbuch.length){
+    showModal("✅", "Alles in Ordnung",
       "Es wurden keine Mängel festgestellt.<br><br>Wir wünschen ruhigen Dienst und gute Fahrt!",
       `<button class="modal-btn secondary" onclick="location.reload()">Prüfung beenden</button>`);
     return;
   }
-  let body="";
-  if(sicherheit.length)body+="🚨 <strong>Sicherheitsrelevant:</strong><br>"+sicherheit.join("<br>")+"<br><br>";
-  if(ausruestung.length)body+="🧰 <strong>Ausrüstung (BeDi):</strong><br>"+ausruestung.join("<br>")+"<br><br>";
-  if(wagenbuch.length)body+="📋 <strong>Wagenbuch:</strong><br>"+wagenbuch.join("<br>");
-  let actions=`<button class="modal-btn secondary" onclick="location.reload()">Prüfung beenden</button>`;
-  if(wagenbuch.length)actions=`<a href="${WAGENBUCH}" target="_blank" class="modal-btn">Wagenbuch öffnen</a>`+actions;
-  showModal("⚠️","Mängel festgestellt",body,actions);
+
+  let body = "";
+  if(sicherheit.length)  body += "🚨 <strong>Sicherheitsrelevant:</strong><br>" + sicherheit.join("<br>") + "<br><br>";
+  if(ausruestung.length) body += "🧰 <strong>Ausrüstung (BeDi):</strong><br>"  + ausruestung.join("<br>") + "<br><br>";
+  if(wagenbuch.length)   body += "📋 <strong>Wagenbuch:</strong><br>"           + wagenbuch.join("<br>");
+
+  let actions = `<button class="modal-btn secondary" onclick="location.reload()">Prüfung beenden</button>`;
+  if(wagenbuch.length)
+    actions = `<a href="${WAGENBUCH}" target="_blank" class="modal-btn">Wagenbuch öffnen</a>` + actions;
+
+  showModal("⚠️", "Mängel festgestellt", body, actions);
 }
 </script>
+</body>
+</html>
