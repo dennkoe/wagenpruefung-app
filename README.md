@@ -1,4 +1,3 @@
-
 # Wagenüberprüfung LVB
 
 Web-App zur Durchführung der täglichen Wagenprüfung.
@@ -6,9 +5,21 @@ Web-App zur Durchführung der täglichen Wagenprüfung.
 ## Funktionen
 - Geführte Checkliste
 - Mängelklassifikation
-- BeDi-Hinweise
-- Wagenbuch-Link
+- Link zum Wagenbuch Webcomm
+- Aufforderung zur Kontaktaufnahme BeDi
 
 ## Nutzung
-Direkt im Browser öffnen oder über Azure bereitgestellt.
-``
+- QR Code nutzen und mit beliebigem mobilen Endgerät nutzen
+- ohne Anmeldung nutzbar (Ausnahme: Wagenbuch)
+
+## Anmerkungen
+- Mit Hilfe von KI erstellt
+- Es wird nichts gespeichert
+- Liste nicht final sortiert
+- Liste gegebenenfalls unvollständig
+
+## Ausblick
+- Wagennummer erfassen und direkt ins Wagenbuch kommen
+- Erfassung Fahrzeug & MA
+- Protokoll erfassen
+  
