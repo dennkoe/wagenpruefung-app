@@ -116,7 +116,7 @@ body{font-family:Arial,sans-serif;background:#e8edf2;font-size:16px;color:#111}
 
     <div class="footer">
       © 2026 LAB Leipziger Aus- und Weiterbildungsbetriebe GmbH<br>
-      Ansprechpartner: Fahrschule Straßenbahn<br>
+      Fahrschule Straßenbahn<br>
       Nur zur internen Verwendung · Keine Daten werden gespeichert<br>
       Mit Hilfe von KI generiert.
     </div>
@@ -216,30 +216,45 @@ document.getElementById("startBtn").addEventListener("click", function(){
 function renderSection(){
   const sec = checklist[sectionIndex];
   document.getElementById("sectionTitle").innerText = sec.title;
+
   let html = "";
   sec.items.forEach((item, i) => {
     const key = sectionIndex + "-" + i;
     const r = results[key];
+
     const okC  = r && r.ok           ? "ok-btn active"    : "ok-btn";
     const noC  = r && r.ok === false ? "notok-btn active" : "notok-btn";
-    const badge = item.color === "rot"  ? `<span class="badge badge-rot">Sicherheit</span>`
-                : item.color === "blau" ? `<span class="badge badge-blau">Ausrüstung</span>`
-                : "";
+
+    const badge =
+      item.color === "rot"  ? `<span class="badge badge-rot">Sicherheit</span>` :
+      item.color === "blau" ? `<span class="badge badge-blau">Ausrüstung</span>` :
+      "";
+
     html += `<div class="card">
       <div class="item-name">${item.name}${badge}</div>
       <div class="btn-row">
-        <button class="${okC}"    data-i="${i}" data-ok="true">✔ OK</button>
+        <button class="${okC}" data-i="${i}" data-ok="true">✔ OK</button>
         <button class="${noC}" data-i="${i}" data-ok="false">✘ Nicht OK</button>
       </div>
     </div>`;
   });
+
   document.getElementById("itemsContainer").innerHTML = html;
-  const all = doneItems(), tot = totalItems();
-  document.getElementById("progressFill").style.width = (all / tot * 100) + "%";
-  document.getElementById("progressLabel").innerText = all + " von " + tot + " bewertet";
+
+  // ✅ Fortschritt PRO SECTION (korrekt)
+  let done = 0;
+  sec.items.forEach((_, i) => {
+    if(results[sectionIndex + "-" + i]) done++;
+  });
+
+  const total = sec.items.length;
+
+  document.getElementById("progressFill").style.width = (done / total * 100) + "%";
+  document.getElementById("progressLabel").innerText = done + " von " + total + " bewertet";
+
   document.getElementById("prevBtn").disabled = sectionIndex === 0;
 }
-
+  
 document.getElementById("itemsContainer").addEventListener("click", function(e){
   const btn = e.target.closest("button[data-i]");
   if(!btn) return;
